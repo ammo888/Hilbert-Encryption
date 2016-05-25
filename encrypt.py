@@ -25,7 +25,7 @@ def encrypt():
 
 	# Pad message with random alphabet characters
 	while len(txtbytes) < n*n: txtbytes.append(randint(97,122))
-	# Useful Constants
+	# Useful constants
 	l = n*n
 	w = len(keybytes)
 	h = math.ceil(l / w)
