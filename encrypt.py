@@ -19,7 +19,7 @@ def setup():
 	imgMap = img.load()
 
 def encrypt():
-	global txt, l, w, h, txtenc
+	global txtbytes, l, w, h
 
 	# Columnar Transposition Cipher
 
@@ -35,12 +35,11 @@ def encrypt():
 	keyMap = sorted([(keybytes[i], i) for i in range(w)])
 	arrArranged = [arr[keyMap[i][1]] for i in range(w)]
 	# Concatenate matrix into string and remove None values
-	txtenc = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
-	txtenc = list(filter(None.__ne__, txtenc))
+	txtbytes = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
+	txtbytes = list(filter(None.__ne__, txtbytes))
 
 	# Viginere Cipher
-
-	txtenc = [(txtenc[i]+keybytes[i % w]) % 256 for i in range(l)]
+	txtbytes = [(txtbytes[i]+keybytes[i % w]) % 256 for i in range(l)]
 
 def hilbert():
 	global img
@@ -48,7 +47,7 @@ def hilbert():
 	# Map bytes to image using Hilbert mapping
 	for d in range(l):
 		x, y = d2xy(n,d)
-		imgMap[x,y] = (txtenc[d], txtenc[d], txtenc[d])
+		imgMap[x,y] = (txtbytes[d], txtbytes[d], txtbytes[d])
 	# Use keysum to determine orientation of hilbert mapping
 	keysum = sum(keybytes) if w > 0 else 0
 	orient = keysum % 4
@@ -80,7 +79,8 @@ def rot(n,x,y,rx,ry):
 
 time_start = time()
 setup()
-encrypt()
+for i in range(16):
+	encrypt()
 hilbert()
 time_elapsed = time() - time_start
 print(str(round(time_elapsed, 6)) + ' seconds to encrypt')
