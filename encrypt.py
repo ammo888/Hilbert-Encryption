@@ -30,12 +30,9 @@ def encrypt():
 	w = len(key)
 	h = math.ceil(l / w)
 	# Write in txt values into an matrix as dictated by the cipher
-	arr = [['' for x in range(h)] for y in range(w)]
-	for i in range(h):
-		for j in range (w):
-			arr[j][i] = txt[w*i + j] if w*i + j < l else ''
+	arr = [[txt[w*i + j] if w*i + j < l else '' for i in range(h)] for j in range(w)]
 	# Sort rows by alphabetic order of key characters and store appropriate row number
-	keyMap = sorted([(key[i], i) for i in range(len(key))])
+	keyMap = sorted([(key[i], i) for i in range(w)])
 	arrArranged = [arr[keyMap[i][1]] for i in range(w)]
 	# Concatenate matrix into string
 	sub = ''.join([''.join(r) for r in arrArranged])
