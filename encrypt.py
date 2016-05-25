@@ -19,26 +19,21 @@ def setup():
 
 def encrypt():
 	global txt, vig
+
 	# Columnar Substitution Cipher
-	sub = ''
 	while len(txt) < n*n:
 		txt += chr(randint(97,122))
 	l = len(txt)
 	w = len(key)
 	h = math.ceil(l / w)
 	arr = [['' for x in range(w)] for y in range(h)]
-	keyMap = sorted(list(key))
+	keyMap = sorted([(key[i], i) for i in range(len(key))])
 	for i in range(h):
 		for j in range (w):
 			arr[i][j] = txt[w*i + j] if w*i + j < l else ''
-	checked = [False] * w
-	for i in range(w):
-		index = key.find(keyMap[i])
-		while checked[index] == True:
-			index = key.find(keyMap[i],index+1)
-		checked[index] = True
-		for k in range(h):
-			sub += arr[k][index]
+	arrTranspose = list(zip(*arr))
+	arrArranged = [arrTranspose[keyMap[i][1]] for i in range(w)]
+	sub = ''.join([''.join(r) for r in arrArranged])
 
 	# Viginere Cipher
 	vig = bytearray()
