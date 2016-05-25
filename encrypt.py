@@ -30,7 +30,7 @@ def encrypt():
     w = len(keybytes)
     h = math.ceil(l / w)
     # Write in txt values into an matrix as dictated by the txtenc
-    rr = [[txtbytes[w*x + y] if w*x + y < l else None for x in range(h)] for y in range(w)]
+    arr = [[txtbytes[w*x + y] if w*x + y < l else None for x in range(h)] for y in range(w)]
     # Sort rows by alphabetic order of key characters and store appropriate row number
     keyMap = sorted([(keybytes[i], i) for i in range(w)])
     arrArranged = [arr[keyMap[i][1]] for i in range(w)]
