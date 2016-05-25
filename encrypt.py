@@ -7,7 +7,7 @@ from PIL import Image
 
 def setup():
 	global txt, txtbytes, key, keybytes, n, img, imgMap
-	# Text, key, and the respective ASCII integer arrays
+	# Text, key, and the respective ASCII integer lists
 	txt = open(sys.argv[1],'r').read()
 	txtbytes = [ord(x) for x in txt]
 	key = sys.argv[2]
@@ -29,10 +29,11 @@ def encrypt():
 	l = n*n
 	w = len(keybytes)
 	h = math.ceil(l / w)
-	# Write in txt values into an matrix as dictated by the txtenc
+	# Write in txt values into an matrix as dictated by the cipher
 	arr = [[txtbytes[w*x + y] if w*x + y < l else None for x in range(h)] for y in range(w)]
-	# Sort rows by alphabetic order of key characters and store appropriate row number
+	# Sort key characters alphabetically and store respective row numbers
 	keyMap = sorted([(keybytes[i], i) for i in range(w)])
+	# Sort rows by keyMap order
 	arrArranged = [arr[keyMap[i][1]] for i in range(w)]
 	# Concatenate matrix into string and remove None values
 	txtbytes = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
@@ -79,7 +80,7 @@ def rot(n,x,y,rx,ry):
 
 time_start = time()
 setup()
-for i in range(16):
+for i in range(len(key)):
 	encrypt()
 hilbert()
 time_elapsed = time() - time_start
