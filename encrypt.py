@@ -19,7 +19,7 @@ def setup():
     imgMap = img.load()
 
 def encrypt():
-    global txt, l, w, h, txtenc
+    global l, w, h, txtenc
 
     # Columnar Transposition Cipher
 
@@ -75,7 +75,7 @@ def rot(n,x,y,rx,ry):
         if rx == 1:
             x = n-1 - x
             y = n-1 - y
-        x, y = y, x
+            x, y = y, x
     return x, y
 
 time_start = time()
