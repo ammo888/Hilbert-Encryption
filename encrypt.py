@@ -83,4 +83,4 @@ setup()
 encrypt()
 hilbert()
 time_elapsed = time() - time_start
-print(str(round(time_elapsed, 6)) + ' seconds to Hilbert encrypt')
+print(str(round(time_elapsed, 6)) + ' seconds to encrypt')
