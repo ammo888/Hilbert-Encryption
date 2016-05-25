@@ -1,69 +1,60 @@
 import sys
 from time import time
 import math
+import functools
 from random import randint
 from PIL import Image
 
 def setup():
 	global txt, txtbytes, key, keybytes, n, img, imgMap
-
+	# Text, key, and the respective ASCII integer arrays
 	txt = open(sys.argv[1],'r').read()
-	#txtbytes = txt.encode()
+	txtbytes = [ord(x) for x in txt]
 	key = sys.argv[2]
-	keybytes = key.encode()
-	# Length of image side has to be a power of 2 for hilbert mapping
+	keybytes = [ord(x) for x in key]
+	# Length of image side has to be a power of 2 for Hilbert mapping
 	n = 2**5
 	# Output image
 	img = Image.new('RGB', (n, n),'black')
 	imgMap = img.load()
 
 def encrypt():
-	global txt, vig
+	global txt, l, w, h, txtenc
 
-	# Columnar Substitution Cipher
+	# Columnar Transposition Cipher
 
 	# Pad message with random alphabet characters
-	while len(txt) < n*n:
-		txt += chr(randint(97,122))
+	while len(txtbytes) < n*n: txtbytes.append(randint(97,122))
 	# Useful Constants
-	l = len(txt)
-	w = len(key)
+	l = n*n
+	w = len(keybytes)
 	h = math.ceil(l / w)
-	# Write in txt values into an matrix as dictated by the cipher
-	arr = [[txt[w*x + y] if w*x + y < l else '' for x in range(h)] for y in range(w)]
+	# Write in txt values into an matrix as dictated by the txtenc
+	arr = [[txtbytes[w*x + y] if w*x + y < l else None for x in range(h)] for y in range(w)]
 	# Sort rows by alphabetic order of key characters and store appropriate row number
-	keyMap = sorted([(key[i], i) for i in range(w)])
+	keyMap = sorted([(keybytes[i], i) for i in range(w)])
 	arrArranged = [arr[keyMap[i][1]] for i in range(w)]
-	# Concatenate matrix into string
-	sub = ''.join([''.join(r) for r in arrArranged])
+	# Concatenate matrix into string and remove None values
+	txtenc = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
+	txtenc = list(filter(None.__ne__, txtenc))
 
-	# Viginere Cipher
-
-	vig = bytearray()
-	for i in range(len(sub)):
-		# Key character ASCII int
-		k = ord(key[i % w])
-		# Cipher character ASCII int
-		c = ord(sub[i].encode())
-		# Vigenere ASCII int
-		b = (k+c) % 256
-		# Add byte to array
-		vig.append(b)
+	# Viginere txtenc
+	txtenc = [(txtenc[i]+keybytes[i % w]) % 256 for i in range(l)]
 
 def hilbert():
 	global img
 
 	# Map bytes to image using Hilbert mapping
-	for d in range(len(vig)):
+	for d in range(l):
 		x, y = d2xy(n,d)
-		imgMap[x,y] = (vig[d], vig[d], vig[d])
+		imgMap[x,y] = (txtenc[d], txtenc[d], txtenc[d])
 	# Use keysum to determine orientation of hilbert mapping
-	keysum = sum(keybytes) if len(key) > 0 else 0
+	keysum = sum(keybytes) if w > 0 else 0
 	orient = keysum % 4
 	# Orient image appropriately
 	img = img.rotate(90*orient)
 	# Save image as .png
-	img.save('encrypted.png')
+	img.save('hilbert.png')
 
 def d2xy(n,d):
 	# R^1 -> R^2 Hilbert mapping
@@ -92,5 +83,3 @@ encrypt()
 hilbert()
 time_elapsed = time() - time_start
 print(str(round(time_elapsed, 6)) + ' seconds to Hilbert encrypt')
-
-
