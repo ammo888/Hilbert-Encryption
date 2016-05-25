@@ -38,7 +38,8 @@ def encrypt():
 	txtenc = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
 	txtenc = list(filter(None.__ne__, txtenc))
 
-	# Viginere txtenc
+	# Viginere Cipher
+
 	txtenc = [(txtenc[i]+keybytes[i % w]) % 256 for i in range(l)]
 
 def hilbert():
