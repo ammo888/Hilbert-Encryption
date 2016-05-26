@@ -12,7 +12,7 @@ def setup():
 	txtbytes = [ord(x) for x in txt]
 	key = sys.argv[2]
 	keybytes = [ord(x) for x in key]
-	# Length of image side has to be a power of 2 for Hilbert mapping
+	# Side length of image has to be a power of 2 for Hilbert mapping
 	n = 2**7
 	# Output image
 	img = Image.new('RGB', (n, n),'black')
