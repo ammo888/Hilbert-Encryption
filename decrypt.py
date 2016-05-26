@@ -13,7 +13,7 @@ def setup():
 	n = img.size[0]
 	l = n*n
 	txtbytes = []
-	
+
 def dehilbert():
 	global img, imgMap, txtbytes
 	orient = (sum(keybytes) if w > 0 else 0) % 4
@@ -22,11 +22,11 @@ def dehilbert():
 	for d in range(l):
 		x, y = d2xy(n, d)
 		txtbytes.append(imgMap[x, y][0])
-	
+
 def decrypt():
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
-	
-	
+
+
 # d2xy and rot copied from Wikipedia
 def d2xy(n,d):
 	# R^1 -> R^2 Hilbert mapping
