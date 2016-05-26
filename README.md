@@ -10,3 +10,8 @@ Then, the encrypted bytes are written into a square image by Hilbert mapping and
 For n = 2**8 = 256 (total of 65,536 bytes that can be encrypted): 34.128763 seconds to encrypt
 
 Higher values of n are not advised.
+
+To encrypt txt file:
+```sh
+$ python encrypt.py filename.txt key
+```
