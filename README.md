@@ -11,7 +11,11 @@ For n = 2**8 = 256 (total of 65,536 bytes that can be encrypted): 34.128763 seco
 
 Higher values of n are not advised.
 
-To encrypt txt file:
+To encrypt txt file: (output saved as hilbert.png)
 ```sh
 $ python encrypt.py filename.txt key
+```
+To decrypt png file: (output saved as output.txt)
+```sh
+$ python decrypt.py hilbert.png key
 ```
