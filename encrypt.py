@@ -57,6 +57,7 @@ def hilbert():
 	# Save image as .png
 	img.save('hilbert.png')
 
+# d2xy and rot copied from Wikipedia
 def d2xy(n,d):
 	# R^1 -> R^2 Hilbert mapping
 	x, y, t = 0, 0, d
