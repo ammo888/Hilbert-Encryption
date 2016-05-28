@@ -14,6 +14,8 @@ For n = 2**7 = 256 (total of 65,536 bytes that can be encrypted): 34.128763 seco
 
 Higher values of n are not advised.
 
+MAKE SURE TEXT FILE IS LESS THAN 16 KB.
+
 Make sure txt file to encrypt is in the same folder as encrypt.py, decrypt.py.
 
 To encrypt txt file: (output saved as hilbert.png)
