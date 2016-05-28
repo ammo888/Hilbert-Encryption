@@ -26,6 +26,19 @@ def dehilbert():
 def decrypt():
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
 
+	pos = 0
+	for i in range(w):
+		pos += h-1
+		if keyMap[i][2] == 0:
+			txtbytes.insert(pos, None)
+		pos += 1
+	arrArranged = [[txtbytes[x+y*h] for x in range(h)] for y in range(w)]
+
+	keyMap = sorted([(i,keyMap[i][1]) for i in range(w)], key = lambda x: x[1])
+
+	arr = [arrArranged[keyMap[i][0]] for i in range(w)]
+
+	txtbytes = [arr[x][y] for y in range(h) for x in range(w)]
 
 # d2xy and rot copied from Wikipedia
 def d2xy(n,d):
@@ -48,3 +61,19 @@ def rot(n,x,y,rx,ry):
 			y = n-1 - y
 		x, y = y, x
 	return x, y
+
+def collect(l, index):
+	return map(itemgetter(index),l)
+
+time_start = time()
+setup()
+dehilbert()
+for i in range (len(key)):
+	decrypt()
+
+txtbytes = txtbytes[:l]
+
+with open('output.txt', 'wb') as output:
+	output.write(bytearray(txtbytes))
+time_elapsed = time() - time_start
+print(str(round(time_elapsed, 6)) + ' seconds to decrypt')
