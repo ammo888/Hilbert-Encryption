@@ -5,7 +5,7 @@ import functools
 from PIL import Image
 
 def setup():
-	global imgMap, key, keybytes, w, n, l, txtbytes
+	global img, imgMap, key, keybytes, w, n, l, txtbytes
 	img = Image.open(sys.argv[1])
 	key = sys.argv[2]
 	keybytes = [ord(x) for x in key]
