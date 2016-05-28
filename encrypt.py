@@ -20,7 +20,6 @@ def setup():
 
 def encrypt():
 	global txtbytes, l, w, h
-
 	# Columnar Transposition Cipher
 
 	# Pad message with random alphabet characters
@@ -31,14 +30,16 @@ def encrypt():
 	h = math.ceil(l / w)
 	# Write in txt values into an matrix as dictated by the cipher
 	arr = [[txtbytes[w*x + y] if w*x + y < l else None for x in range(h)] for y in range(w)]
+
 	# Sort key characters alphabetically and store respective row numbers
 	keyMap = sorted([(keybytes[i], i) for i in range(w)])
 	# Sort rows by keyMap order
 	arrArranged = [arr[keyMap[i][1]] for i in range(w)]
+
 	# Concatenate matrix into string and remove None values
 	txtbytes = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
 	txtbytes = list(filter(None.__ne__, txtbytes))
-
+		
 	# Viginere Cipher
 	txtbytes = [(txtbytes[i]+keybytes[i % w]) % 256 for i in range(l)]
 
@@ -78,6 +79,7 @@ def rot(n,x,y,rx,ry):
 			y = n-1 - y
 		x, y = y, x
 	return x, y
+
 
 time_start = time()
 setup()

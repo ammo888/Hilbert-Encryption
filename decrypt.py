@@ -3,9 +3,10 @@ from time import time
 import math
 import functools
 from PIL import Image
+from operator import itemgetter
 
 def setup():
-	global imgMap, key, keybytes, w, n, l, txtbytes
+	global imgMap, key, keybytes, w, n, l, txtbytes, img
 	img = Image.open(sys.argv[1])
 	key = sys.argv[2]
 	keybytes = [ord(x) for x in key]
@@ -17,16 +18,37 @@ def setup():
 def dehilbert():
 	global img, imgMap, txtbytes
 	orient = (sum(keybytes) if w > 0 else 0) % 4
+	#unrotate image
 	img = img.rotate(-90*orient)
 	imgMap = img.load()
+	#grab string from image
 	for d in range(l):
 		x, y = d2xy(n, d)
 		txtbytes.append(imgMap[x, y][0])
-	
+		
 def decrypt():
+	global txtbytes
+	h = math.ceil(l / w)
+	rmd = l % w
+	keyMap = sorted([(keybytes[i],i,1 if i < rmd else 0) for i in range(w)])
+	#reverse viginere
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
 	
+	pos = 0
+	for i in range(w):
+		pos += h-1
+		if keyMap[i][2] == 0:
+			txtbytes.insert(pos, None)
+		pos += 1
+	arrArranged = [[txtbytes[x+y*h] for x in range(h)] for y in range(w)]
+		
+	keyMap = sorted([(i,keyMap[i][1]) for i in range(w)], key = lambda x: x[1])
 	
+	arr = [arrArranged[keyMap[i][0]] for i in range(w)]
+
+	txtbytes = [arr[x][y] for y in range(h) for x in range(w)]
+
+
 # d2xy and rot copied from Wikipedia
 def d2xy(n,d):
 	# R^1 -> R^2 Hilbert mapping
@@ -48,3 +70,19 @@ def rot(n,x,y,rx,ry):
 			y = n-1 - y
 		x, y = y, x
 	return x, y
+
+def collect(l, index):
+	return map(itemgetter(index),l)
+
+time_start = time()
+setup()
+dehilbert()
+for i in range (len(key)):
+	decrypt()
+	
+txtbytes = txtbytes[:l]
+	
+with open('output.txt', 'wb') as output:
+	output.write(bytearray(txtbytes))
+time_elapsed = time() - time_start
+print(str(round(time_elapsed, 6)) + ' seconds to decrypt')
