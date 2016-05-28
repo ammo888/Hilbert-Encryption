@@ -5,13 +5,14 @@ import functools
 from PIL import Image
 
 def setup():
-	global img, imgMap, key, keybytes, w, n, l, txtbytes
+	global img, imgMap, key, keybytes, w, n, l, h, txtbytes
 	img = Image.open(sys.argv[1])
 	key = sys.argv[2]
 	keybytes = [ord(x) for x in key]
 	w = len(key)
 	n = img.size[0]
 	l = n*n
+	h = math.ceil(l / w)
 	txtbytes = []
 
 def dehilbert():
@@ -24,9 +25,13 @@ def dehilbert():
 		txtbytes.append(imgMap[x, y][0])
 
 def decrypt():
+	global txtbytes
 	# De-Vigenere Cipher
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
+
 	# Insert None in right places for reverse columnar transposition
+	rmd = l % w
+	keyMap = sorted([(keybytes[i], i, 1 if i < rmd else 0) for i in range(w)])
 	pos = 0
 	for i in range(w):
 		pos += h-1
