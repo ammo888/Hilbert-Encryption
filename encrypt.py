@@ -39,7 +39,7 @@ def encrypt():
 	# Concatenate matrix into string and remove None values
 	txtbytes = functools.reduce(lambda a, r: a + arrArranged[r], range(w), [])
 	txtbytes = list(filter(None.__ne__, txtbytes))
-		
+
 	# Viginere Cipher
 	txtbytes = [(txtbytes[i]+keybytes[i % w]) % 256 for i in range(l)]
 
