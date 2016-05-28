@@ -3,10 +3,9 @@ from time import time
 import math
 import functools
 from PIL import Image
-from operator import itemgetter
 
 def setup():
-	global imgMap, key, keybytes, w, n, l, txtbytes, img
+	global imgMap, key, keybytes, w, n, l, txtbytes
 	img = Image.open(sys.argv[1])
 	key = sys.argv[2]
 	keybytes = [ord(x) for x in key]
@@ -18,21 +17,19 @@ def setup():
 def dehilbert():
 	global img, imgMap, txtbytes
 	orient = (sum(keybytes) if w > 0 else 0) % 4
-	#unrotate image
 	img = img.rotate(-90*orient)
 	imgMap = img.load()
-	#grab string from image
 	for d in range(l):
 		x, y = d2xy(n, d)
 		txtbytes.append(imgMap[x, y][0])
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> parent of dd3b423... FINISHED
 def decrypt():
-	global txtbytes
-	h = math.ceil(l / w)
-	rmd = l % w
-	keyMap = sorted([(keybytes[i],i,1 if i < rmd else 0) for i in range(w)])
-	#reverse viginere
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
+<<<<<<< HEAD
 
 	pos = 0
 	for i in range(w):
@@ -48,6 +45,10 @@ def decrypt():
 
 	txtbytes = [arr[x][y] for y in range(h) for x in range(w)]
 
+=======
+	
+	
+>>>>>>> parent of dd3b423... FINISHED
 # d2xy and rot copied from Wikipedia
 def d2xy(n,d):
 	# R^1 -> R^2 Hilbert mapping
@@ -69,6 +70,7 @@ def rot(n,x,y,rx,ry):
 			y = n-1 - y
 		x, y = y, x
 	return x, y
+<<<<<<< HEAD
 
 def collect(l, index):
 	return map(itemgetter(index),l)
@@ -85,3 +87,5 @@ with open('output.txt', 'wb') as output:
 	output.write(bytearray(txtbytes))
 time_elapsed = time() - time_start
 print(str(round(time_elapsed, 6)) + ' seconds to decrypt')
+=======
+>>>>>>> parent of dd3b423... FINISHED
