@@ -14,7 +14,7 @@ def setup():
 	n = img.size[0]
 	l = n*n
 	txtbytes = []
-	
+
 def dehilbert():
 	global img, imgMap, txtbytes
 	orient = (sum(keybytes) if w > 0 else 0) % 4
@@ -25,7 +25,11 @@ def dehilbert():
 	for d in range(l):
 		x, y = d2xy(n, d)
 		txtbytes.append(imgMap[x, y][0])
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> master
 def decrypt():
 	global txtbytes
 	h = math.ceil(l / w)
@@ -33,6 +37,7 @@ def decrypt():
 	keyMap = sorted([(keybytes[i],i,1 if i < rmd else 0) for i in range(w)])
 	#reverse viginere
 	txtbytes = [(txtbytes[i]-keybytes[i%w]) % 256 for i in range(l)]
+<<<<<<< HEAD
 	
 	pos = 0
 	for i in range(w):
@@ -47,6 +52,8 @@ def decrypt():
 	arr = [arrArranged[keyMap[i][0]] for i in range(w)]
 
 	txtbytes = [arr[x][y] for y in range(h) for x in range(w)]
+=======
+>>>>>>> master
 
 
 # d2xy and rot copied from Wikipedia
