@@ -1,9 +1,9 @@
 import sys
-from time import time
 import math
 import functools
-from random import randint
 from PIL import Image
+from time import time
+from random import randint
 
 def setup():
 	global txt, txtbytes, key, keybytes, n, img, imgMap
@@ -79,10 +79,14 @@ def rot(n,x,y,rx,ry):
 		x, y = y, x
 	return x, y
 
-time_start = time()
-setup()
-for i in range(len(key)):
-	encrypt()
-hilbert()
-time_elapsed = time() - time_start
-print(str(round(time_elapsed, 6)) + ' seconds to encrypt')
+def main():
+	time_start = time()
+	setup()
+	for i in range(len(key)):
+		encrypt()
+	hilbert()
+	time_elapsed = time() - time_start
+	print(str(round(time_elapsed, 6)) + ' seconds to encrypt')
+
+if __name__ == '__main__':
+	main()

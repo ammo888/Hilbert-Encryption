@@ -1,8 +1,8 @@
 import sys
-from time import time
 import math
 import functools
 from PIL import Image
+from time import time
 
 def setup():
 	global img, imgMap, key, keybytes, w, n, l, h, txtbytes
@@ -68,13 +68,18 @@ def rot(n,x,y,rx,ry):
 		x, y = y, x
 	return x, y
 
-time_start = time()
-setup()
-dehilbert()
-for i in range (len(key)):
-	decrypt()
-txtbytes = txtbytes[:l]
-with open('output.txt', 'wb') as output:
-	output.write(bytearray(txtbytes))
-time_elapsed = time() - time_start
-print(str(round(time_elapsed, 6)) + ' seconds to decrypt')
+def main():
+	global img, imgMap, key, keybytes, w, n, l, h, txtbytes
+	time_start = time()
+	setup()
+	dehilbert()
+	for i in range (len(key)):
+		decrypt()
+	txtbytes = txtbytes[:l]
+	with open('output.txt', 'wb') as output:
+		output.write(bytearray(txtbytes))
+	time_elapsed = time() - time_start
+	print(str(round(time_elapsed, 6)) + ' seconds to decrypt')
+
+if __name__ == '__main__':
+	main()
